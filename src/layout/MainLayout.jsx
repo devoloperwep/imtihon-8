@@ -13,7 +13,7 @@ function MainLayout() {
           <p>
             Copyright © {new Date().getFullYear()} - All right reserved by{" "}
             <a
-              className="underline text-blue-500"
+              className="underline text-blue-500 ml-2"
               href="https://github.com/devoloperwep"
             >
               Karimov Suhrobbek
