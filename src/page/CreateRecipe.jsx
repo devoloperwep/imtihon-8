@@ -13,6 +13,7 @@ function CreateRecipe() {
   const [method, setMethod] = useState("");
   const [errors, setErrors] = useState({});
 
+  // handlePreview
   const handlePreview = () => {
     const formData = { title, cookingTime, ingredients, imageUrl, method };
     const safeErrors = useError(formData);
@@ -26,6 +27,7 @@ function CreateRecipe() {
     }
   };
 
+  // handleSubmit
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = { title, cookingTime, ingredients, imageUrl, method };
@@ -41,6 +43,18 @@ function CreateRecipe() {
     }
   };
 
+  // auto filling
+  function autoFilling() {
+    setTitle("Palov");
+    setCookingTime("120");
+    setIngredients("guruch, sabzi, go'sht, piyoz, yog', tuz, ziravorlar, suv");
+    setImageUrl(
+      "https://adrastravel.com/wp-content/uploads/2021/12/plov-na-lyagane.jpg"
+    );
+    setMethod(
+      "1. Go'shtni qovuring.\n2. Piyoz va sabzini qo'shing.\n3. Suv solib qaynating.\n4. Guruchni qo'shib dimlang.\n5. Osh tayyor!"
+    );
+  }
   return (
     <div className="min-h-screen from-orange-50 via-rose-50 to-amber-50 flex flex-col items-center justify-center py-6 px-3">
       <Link
@@ -163,6 +177,13 @@ function CreateRecipe() {
             >
               Apply
             </button>
+            <button
+              onClick={autoFilling}
+              className="btn w-full sm:w-auto h-12 px-6 bg-neutral-900 text-white font-semibold rounded-xl shadow-md hover:bg-neutral-800 active:bg-neutral-700 transition-all duration-300 ease-in-out"
+            >
+              ⚡ Auto Filling
+            </button>
+
             <button
               onClick={handlePreview}
               type="button"

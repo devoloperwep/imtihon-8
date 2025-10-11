@@ -2,11 +2,11 @@ function RecipePreview({ data, setPreview }) {
   return (
     <div className="flex items-center justify-center w-full  from-orange-50 via-rose-50 to-amber-50 px-4 py-12">
       <div className="w-full max-w-5xl bg-white shadow-2xl rounded-3xl overflow-hidden border border-gray-100 flex flex-col md:flex-row">
-        <div className="md:w-1/2 w-full h-64 md:h-auto relative overflow-hidden">
+        <div className="md:w-1/2 w-full h-full md:h-auto relative overflow-hidden">
           <img
             src={data.imageUrl}
             alt={data.title}
-            className="w-full h-full object-cover rounded-t-3xl md:rounded-l-3xl md:rounded-tr-none transition-transform duration-300 hover:scale-105"
+            className="w-full h-full rounded-t-3xl md:rounded-l-3xl md:rounded-tr-none transition-transform duration-300 hover:scale-105"
             onError={(e) =>
               (e.target.src =
                 "https://via.placeholder.com/600x400?text=Image+Not+Available")
