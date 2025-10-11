@@ -1,9 +1,22 @@
+// React
 import { useState } from "react";
-import { Link } from "react-router-dom";
+// react-redux
+import { useDispatch, useSelector } from "react-redux";
+import { addRecipe, clear, removeRecipe } from "../app/feature/recipeSlice";
+// router-dom
+import { Link, useNavigate } from "react-router-dom";
+// components
 import RecipePreview from "../components/RecipePreview";
 import { useError } from "../components/useError";
+// uuid
+import { v4 as uuidv4 } from "uuid";
 
 function CreateRecipe() {
+  // redux
+  const recipe = useSelector((store) => store.recipe);
+  const dispatch = useDispatch();
+  console.log(recipe);
+  // useState
   const [data, setData] = useState(null);
   const [preview, setPreview] = useState(false);
   const [title, setTitle] = useState("");
@@ -12,6 +25,8 @@ function CreateRecipe() {
   const [imageUrl, setImageUrl] = useState("");
   const [method, setMethod] = useState("");
   const [errors, setErrors] = useState({});
+  // router-dom
+  const navigate = useNavigate();
 
   // handlePreview
   const handlePreview = () => {
@@ -38,13 +53,16 @@ function CreateRecipe() {
       setErrors({});
       e.target.reset();
       setPreview(false);
+      dispatch(addRecipe({ ...formData, id: uuidv4() }));
+      navigate("/");
     } else {
       setErrors(safeErrors);
     }
   };
 
   // auto filling
-  function autoFilling() {
+  function autoFilling(e) {
+    e.preventDefault();
     setTitle("Palov");
     setCookingTime("120");
     setIngredients("guruch, sabzi, go'sht, piyoz, yog', tuz, ziravorlar, suv");
