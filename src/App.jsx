@@ -1,5 +1,6 @@
 // page
-import { CreateRecipe, EditProfile, Home, Login, Signup } from "./page";
+import { CreateRecipe, EditProfile, Home, Login, Register } from "./page";
+import { action as RegisterAction } from "./page/Register";
 // components
 import ProtectedRoutes from "./components/ProtectedRoutes";
 // react-router-dom
@@ -10,10 +11,15 @@ import {
 } from "react-router-dom";
 // layout
 import MainLayout from "./layout/MainLayout";
+// ✅ Toastify import
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+// redux
+import { useDispatch, useSelector } from "react-redux";
 
 function App() {
-  const user = true;
-
+  const dispatch = useDispatch();
+  const { user } = useSelector((store) => store.user);
   const routes = createBrowserRouter([
     {
       path: "/",
@@ -24,7 +30,7 @@ function App() {
       ),
       children: [
         {
-          index: "/",
+          index: true,
           element: <Home />,
         },
         {
@@ -42,12 +48,18 @@ function App() {
       element: user ? <Navigate to="/" /> : <Login />,
     },
     {
-      path: "/signup",
-      element: user ? <Navigate to="/" /> : <Signup />,
+      path: "/register",
+      element: user ? <Navigate to="/" /> : <Register />,
+      action: RegisterAction,
     },
   ]);
 
-  return <RouterProvider router={routes} />;
+  return (
+    <>
+      <ToastContainer position="top-right" autoClose={2000} />
+      <RouterProvider router={routes} />
+    </>
+  );
 }
 
 export default App;

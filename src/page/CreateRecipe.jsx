@@ -2,7 +2,7 @@
 import { useState } from "react";
 // react-redux
 import { useDispatch, useSelector } from "react-redux";
-import { addRecipe, clear, removeRecipe } from "../app/feature/recipeSlice";
+import { addRecipe } from "../app/feature/recipeSlice";
 // router-dom
 import { Link, useNavigate } from "react-router-dom";
 // components
@@ -10,6 +10,8 @@ import RecipePreview from "../components/RecipePreview";
 import { useError } from "../components/useError";
 // uuid
 import { v4 as uuidv4 } from "uuid";
+// toast
+import { toast } from "react-toastify";
 
 function CreateRecipe() {
   // redux
@@ -55,6 +57,7 @@ function CreateRecipe() {
       setPreview(false);
       dispatch(addRecipe({ ...formData, id: uuidv4() }));
       navigate("/");
+      toast.success("Recipe qo'shildi.");
     } else {
       setErrors(safeErrors);
     }

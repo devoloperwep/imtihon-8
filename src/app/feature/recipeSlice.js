@@ -13,8 +13,9 @@ const recipeSlice = createSlice({
       localStorage.setItem("reciple", JSON.stringify(state));
     },
     removeRecipe: (state, { payload }) => {
-      state = state.filter((item) => item.id !== payload);
-      localStorage.setItem("reciple", JSON.stringify(state));
+      const updated = state.filter((item) => item.id !== payload);
+      localStorage.setItem("reciple", JSON.stringify(updated));
+      return updated;
     },
     clear: () => {
       localStorage.clear("reciple");

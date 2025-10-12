@@ -1,8 +1,29 @@
+// redux
+import { useDispatch } from "react-redux";
+import { removeRecipe } from "../app/feature/recipeSlice";
+// toast
+import { toast } from "react-toastify";
+
 function RecipeItem({ rec }) {
-  console.log(rec);
+  const dispatch = useDispatch();
+
+  const handleDelete = () => {
+    if (confirm(`"${rec.title}" ni o‘chirmoqchimisiz?`)) {
+      dispatch(removeRecipe(rec.id));
+      toast.error(`"${rec.title}" olib tashlandi.`);
+    }
+  };
+
   return (
     <div className="flex justify-center p-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-[1.02] transition-transform duration-300">
+      <div className="group relative w-full max-w-md bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-[1.02] transition-transform duration-300">
+        <button
+          onClick={handleDelete}
+          className="absolute top-3 right-3 bg-red-500 text-white text-sm px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-red-600 shadow-md"
+        >
+          🗑 Delete
+        </button>
+
         <img
           src={rec.imageUrl}
           alt={rec.title}

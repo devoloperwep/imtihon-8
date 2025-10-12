@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Form, Link } from "react-router-dom";
 
 function Login() {
   return (
@@ -7,7 +7,7 @@ function Login() {
         <h2 className="text-3xl font-semibold mb-6 text-center text-sky-600">
           Welcome Back 👋
         </h2>
-        <form>
+        <Form>
           <input
             id="email"
             className="w-full bg-gray-50 border border-gray-200 my-3 outline-none rounded-full py-3 px-5 text-gray-700 placeholder:text-gray-400 focus:border-sky-400 focus:ring-1 focus:ring-sky-300 transition-all"
@@ -36,14 +36,14 @@ function Login() {
           >
             Log in
           </button>
-        </form>
+        </Form>
         <p className="text-center mt-4 text-gray-600">
           Don’t have an account?{" "}
           <Link
-            to="/signup"
+            to="/register"
             className="text-sky-500 hover:text-sky-600 underline font-medium"
           >
-            Signup
+            Register
           </Link>
         </p>
         <button
