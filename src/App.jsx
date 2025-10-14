@@ -1,3 +1,6 @@
+// react
+import { useEffect } from "react";
+
 // page
 import { CreateRecipe, EditProfile, Home, Login, Register } from "./page";
 import { action as RegisterAction } from "./page/Register";
@@ -17,11 +20,15 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // redux
 import { useDispatch, useSelector } from "react-redux";
+import { isAuthReady, login } from "./app/feature/userSlice";
+// firebase
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase/config";
 
 function App() {
   const dispatch = useDispatch();
 
-  const { user } = useSelector((store) => store.user);
+  const { user, authReady } = useSelector((store) => store.user);
   const routes = createBrowserRouter([
     {
       path: "/",
@@ -57,10 +64,19 @@ function App() {
     },
   ]);
 
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user?.displayName) {
+        dispatch(login(user));
+      }
+      dispatch(isAuthReady());
+    });
+  }, []);
+
   return (
     <>
       <ToastContainer position="top-right" autoClose={2000} />
-      <RouterProvider router={routes} />
+      <>{authReady && <RouterProvider router={routes} />}</>
     </>
   );
 }
