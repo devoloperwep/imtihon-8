@@ -1,6 +1,7 @@
 // page
 import { CreateRecipe, EditProfile, Home, Login, Register } from "./page";
 import { action as RegisterAction } from "./page/Register";
+import { action as LoginAction } from "./page/Login";
 // components
 import ProtectedRoutes from "./components/ProtectedRoutes";
 // react-router-dom
@@ -47,6 +48,7 @@ function App() {
     {
       path: "/login",
       element: user ? <Navigate to="/" /> : <Login />,
+      action: LoginAction,
     },
     {
       path: "/register",

@@ -1,22 +1,49 @@
-import { Form, Link } from "react-router-dom";
+// react-router
+import { useEffect, useState } from "react";
+import { Form, Link, useActionData } from "react-router-dom";
+import { LoginError } from "../components/useError";
+// hooks
+import { useLogin } from "../hooks/useLogin";
+// toast
+import { toast } from "react-toastify";
+
+export async function action({ request }) {
+  const formData = await request.formData();
+  const data = Object.fromEntries(formData);
+  return data;
+}
 
 function Login() {
+  const user = useActionData();
+  const [err, setErr] = useState(null);
+  const { _login, error, isPending } = useLogin();
+  console.log(error);
+  useEffect(() => {
+    if (user?.email && user?.password) {
+      _login(user.email, user.password);
+      console.log("hi");
+      setErr(false);
+    } else {
+      setErr(user ? LoginError(user) : false);
+    }
+  }, [user]);
+  console.log(user);
   return (
     <div className="w-full h-screen flex items-center justify-center bg-gradient-to-br from-sky-100 via-blue-50 to-gray-100 px-4">
       <div className="bg-white/80 backdrop-blur-xl text-gray-700 w-full max-w-md md:p-8 p-6 rounded-2xl shadow-lg border border-white/40">
         <h2 className="text-3xl font-semibold mb-6 text-center text-sky-600">
           Welcome Back 👋
         </h2>
-        <Form>
+        <Form method="post">
           <input
-            id="email"
+            name="email"
             className="w-full bg-gray-50 border border-gray-200 my-3 outline-none rounded-full py-3 px-5 text-gray-700 placeholder:text-gray-400 focus:border-sky-400 focus:ring-1 focus:ring-sky-300 transition-all"
             type="email"
             placeholder="Enter your email"
             required
           />
           <input
-            id="password"
+            name="password"
             className="w-full bg-gray-50 border border-gray-200 outline-none rounded-full py-3 px-5 text-gray-700 placeholder:text-gray-400 focus:border-sky-400 focus:ring-1 focus:ring-sky-300 transition-all"
             type="password"
             placeholder="Enter your password"
@@ -32,11 +59,16 @@ function Login() {
           </div>
           <button
             type="submit"
-            className="w-full mb-3 bg-sky-500 hover:bg-sky-600 transition-all py-3 rounded-full text-white font-medium shadow-md"
+            disabled={isPending}
+            className="w-full mb-3 bg-sky-500 hover:bg-sky-600 transition-all py-3 rounded-full text-white font-medium shadow-md disabled:opacity-70"
           >
-            Log in
+            {isPending ? "Logging in..." : "Log in"}
           </button>
         </Form>
+        {error && (
+          <p className="text-center text-red-500 mt-2 text-sm">{error}</p>
+        )}
+        {err && <p className="text-center text-red-500 mt-2 text-sm">{err}</p>}
         <p className="text-center mt-4 text-gray-600">
           Don’t have an account?{" "}
           <Link
