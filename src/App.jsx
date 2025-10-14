@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 function App() {
   const dispatch = useDispatch();
+
   const { user } = useSelector((store) => store.user);
   const routes = createBrowserRouter([
     {

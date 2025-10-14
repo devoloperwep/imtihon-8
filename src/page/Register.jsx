@@ -1,4 +1,11 @@
+// react
+import { useEffect, useState } from "react";
+// router-dom
 import { Form, Link, useActionData } from "react-router-dom";
+// components
+import { useFirebaseError, useRegisterError } from "../components/useError";
+// hooks
+import { useRegister } from "../hooks/useRegister";
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -7,8 +14,19 @@ export async function action({ request }) {
 }
 
 function Register() {
-  const data = useActionData();
-  console.log(data);
+  const user = useActionData();
+  const [err, setErr] = useState(null);
+  const { error, isPending, register } = useRegister();
+  const friendlyError = useFirebaseError(error);
+  useEffect(() => {
+    if (user?.name && user?.email && user?.password) {
+      register(user.name, user.email, user.password);
+      setErr(false);
+    } else {
+      setErr(user ? useRegisterError(user) : false);
+    }
+  }, [user]);
+
   return (
     <div className="w-full h-screen flex items-center justify-center bg-gradient-to-br from-sky-100 via-blue-50 to-gray-100 px-4">
       <div className="bg-white/80 backdrop-blur-xl text-gray-700 w-full max-w-md md:p-8 p-6 rounded-2xl shadow-lg border border-white/40">
@@ -16,43 +34,61 @@ function Register() {
           Create Account ✨
         </h2>
 
-        <Form method="post">
-          <input
-            name="name"
-            className="w-full bg-gray-50 border border-gray-200 my-3 outline-none rounded-full py-3 px-5 text-gray-700 placeholder:text-gray-400 focus:border-sky-400 focus:ring-1 focus:ring-sky-300 transition-all"
-            type="text"
-            placeholder="Enter your full name"
-            required
-          />
+        <Form method="post" className="flex flex-col">
+          <div className="mb-3">
+            <input
+              name="name"
+              className={`w-full bg-gray-50 border ${
+                err?.name ? "border-red-400" : "border-gray-200"
+              } outline-none rounded-full py-3 px-5 text-gray-700 placeholder:text-gray-400 focus:border-sky-400 focus:ring-1 focus:ring-sky-300 transition-all`}
+              type="text"
+              placeholder="Enter your full name"
+            />
+            {err?.name && (
+              <p className="text-red-500 text-sm mt-1 ml-3">{err.name}</p>
+            )}
+          </div>
 
-          <input
-            name="image"
-            className="w-full bg-gray-50 border border-gray-200 outline-none rounded-full py-3 px-5 text-gray-700 placeholder:text-gray-400 focus:border-sky-400 focus:ring-1 focus:ring-sky-300 transition-all"
-            type="url"
-            placeholder="Enter your profile image URL"
-          />
+          <div className="mb-3">
+            <input
+              name="email"
+              className={`w-full bg-gray-50 border ${
+                err?.email ? "border-red-400" : "border-gray-200"
+              } outline-none rounded-full py-3 px-5 text-gray-700 placeholder:text-gray-400 focus:border-sky-400 focus:ring-1 focus:ring-sky-300 transition-all`}
+              type="email"
+              placeholder="Enter your email"
+            />
+            {err?.email && (
+              <p className="text-red-500 text-sm mt-1 ml-3">{err.email}</p>
+            )}
+          </div>
 
-          <input
-            name="email"
-            className="w-full bg-gray-50 border border-gray-200 my-3 outline-none rounded-full py-3 px-5 text-gray-700 placeholder:text-gray-400 focus:border-sky-400 focus:ring-1 focus:ring-sky-300 transition-all"
-            type="email"
-            placeholder="Enter your email"
-            required
-          />
+          <div className="mb-3">
+            <input
+              name="password"
+              className={`w-full bg-gray-50 border ${
+                err?.password ? "border-red-400" : "border-gray-200"
+              } outline-none rounded-full py-3 px-5 text-gray-700 placeholder:text-gray-400 focus:border-sky-400 focus:ring-1 focus:ring-sky-300 transition-all`}
+              type="password"
+              placeholder="Create a password"
+            />
+            {err?.password && (
+              <p className="text-red-500 text-sm mt-1 ml-3">{err.password}</p>
+            )}
+          </div>
 
-          <input
-            name="password"
-            className="w-full bg-gray-50 border border-gray-200 outline-none rounded-full py-3 px-5 text-gray-700 placeholder:text-gray-400 focus:border-sky-400 focus:ring-1 focus:ring-sky-300 transition-all"
-            type="password"
-            placeholder="Create a password"
-            required
-          />
+          {error && (
+            <p className="text-red-500 text-center text-sm mt-2">
+              {friendlyError}
+            </p>
+          )}
 
           <button
             type="submit"
-            className="w-full my-5 bg-sky-500 hover:bg-sky-600 transition-all py-3 rounded-full text-white font-medium shadow-md"
+            disabled={isPending}
+            className="w-full my-4 bg-sky-500 hover:bg-sky-600 transition-all py-3 rounded-full text-white font-medium shadow-md disabled:opacity-60"
           >
-            Register
+            {isPending ? "Creating account..." : "Register"}
           </button>
         </Form>
 
