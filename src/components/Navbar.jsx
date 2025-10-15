@@ -1,10 +1,12 @@
 import { Link, NavLink } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme";
 import { useLogout } from "../hooks/useLogout";
+import { useSelector } from "react-redux";
 
 function Navbar() {
   const { theme, changeTheme } = useTheme();
   const { error, isPending, logout } = useLogout();
+  const { user } = useSelector((store) => store.user);
 
   return (
     <header className="border-b border-base-200">
@@ -34,7 +36,7 @@ function Navbar() {
             </label>
 
             <h3 className="truncate w-20 md:w-full font-semibold text-blue-400">
-              Sukhrob Karimov
+              {user.displayName}
             </h3>
 
             <div className="dropdown dropdown-end">
@@ -44,10 +46,7 @@ function Navbar() {
                 className="btn btn-ghost btn-circle avatar"
               >
                 <div className="w-10 rounded-full">
-                  <img
-                    alt="User avatar"
-                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                  />
+                  <img alt="User avatar" src={user.photoURL} />
                 </div>
               </div>
 

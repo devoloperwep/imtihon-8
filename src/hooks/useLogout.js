@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useFirebaseError } from "../components/useError";
 import { useDispatch } from "react-redux";
 import { logout as logoutAction } from "../app/feature/userSlice";
+import { toast } from "react-toastify";
 
 export const useLogout = () => {
   const dispatch = useDispatch();
@@ -17,6 +18,7 @@ export const useLogout = () => {
     try {
       await signOut(auth);
       dispatch(logoutAction());
+      toast.dark("Hisobdan muvaffaqiyatli chiqdingiz ✅");
     } catch (err) {
       setError(useFirebaseError(err.message));
     } finally {

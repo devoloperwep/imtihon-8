@@ -4,8 +4,6 @@ import { Form, Link, useActionData } from "react-router-dom";
 import { LoginError } from "../components/useError";
 // hooks
 import { useLogin } from "../hooks/useLogin";
-// toast
-import { toast } from "react-toastify";
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -27,7 +25,6 @@ function Login() {
       setErr(user ? LoginError(user) : false);
     }
   }, [user]);
-  console.log(user);
   return (
     <div className="w-full h-screen flex items-center justify-center bg-gradient-to-br from-sky-100 via-blue-50 to-gray-100 px-4">
       <div className="bg-white/80 backdrop-blur-xl text-gray-700 w-full max-w-md md:p-8 p-6 rounded-2xl shadow-lg border border-white/40">
