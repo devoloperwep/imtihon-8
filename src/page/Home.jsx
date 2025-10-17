@@ -7,9 +7,14 @@ import { Link } from "react-router-dom";
 import RecipeItem from "../components/RecipeItem";
 // toast
 import { toast } from "react-toastify";
+// hooks
+import Users from "../components/Users";
+import { useCollection } from "../hooks/useCollection";
 
 function Home() {
   const recipe = useSelector((store) => store.recipe);
+  const { data } = useCollection("users");
+  console.log(data);
   const dispatch = useDispatch();
 
   const handleClearAll = () => {
@@ -62,6 +67,37 @@ function Home() {
             ))}
           </div>
         )}
+
+        <div className="mt-12">
+          <div className="flex items-center justify-between mb-6">
+            <h4 className="text-2xl font-bold text-orange-800">Users</h4>
+            <span className="text-sm text-gray-500">
+              {data?.length ?? 0} ta foydalanuvchi
+            </span>
+          </div>
+
+          {data?.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-12 text-center border-2 border-dashed border-gray-200 rounded-2xl bg-white">
+              <h5 className="text-lg font-medium text-gray-600">
+                Hech qanday foydalanuvchi topilmadi
+              </h5>
+              <p className="text-sm text-gray-400 mt-2">
+                Foydalanuvchilar yuklanmoqda yoki mavjud emas.
+              </p>
+            </div>
+          ) : (
+            <ul className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+              {data?.map((user) => (
+                <li
+                  key={user.uid}
+                  className="bg-white rounded-xl shadow-sm p-4 hover:shadow-md transition-shadow"
+                >
+                  <Users user={user} />
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
     </section>
   );

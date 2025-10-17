@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { auth } from "../firebase/config";
+import { auth, db } from "../firebase/config";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { login } from "../app/feature/userSlice";
 import { useFirebaseError } from "../components/useError";
 import { toast } from "react-toastify";
+import { doc, updateDoc } from "firebase/firestore";
 
 export const useLogin = () => {
   const dispatch = useDispatch();
@@ -14,10 +15,16 @@ export const useLogin = () => {
   const _login = async (email, password) => {
     try {
       setIsPending(true);
+
       const req = await signInWithEmailAndPassword(auth, email, password);
-      if (!req.user) {
-        throw new Error("Login failed");
-      }
+      if (!req.user) throw new Error("Login failed");
+
+      // ✅ To‘g‘ri foydalanuvchi ID ni ishlatyapmiz
+      const userRef = doc(db, "users", req.user.uid);
+
+      await updateDoc(userRef, {
+        online: true,
+      });
 
       dispatch(login(req.user));
       toast.success("✅ Muvaffaqiyatli tizimga kirdingiz!");

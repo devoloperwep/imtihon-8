@@ -31,6 +31,7 @@ export const useRegister = () => {
         displayName: req.user.displayName,
         photoURL: req.user.photoURL,
         uid: req.user.uid,
+        online: true,
       });
       dispatch(login(req.user));
       toast.success("Muvaffaqiyatli ro'yxatdan o'tdingiz!");
