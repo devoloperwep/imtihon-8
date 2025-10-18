@@ -6,6 +6,7 @@ import { Form, Link, useActionData } from "react-router-dom";
 import { useFirebaseError, useRegisterError } from "../components/useError";
 // hooks
 import { useRegister } from "../hooks/useRegister";
+import { useGoogle } from "../hooks/useGoogle";
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -18,6 +19,7 @@ function Register() {
   const [err, setErr] = useState(null);
   const { error, isPending, register } = useRegister();
   const friendlyError = useFirebaseError(error);
+  const { errorGoogle, googleProvider, isPendingGoogle } = useGoogle();
   useEffect(() => {
     if (user?.name && user?.email && user?.password) {
       register(user.name, user.email, user.password);
@@ -103,16 +105,35 @@ function Register() {
         </p>
 
         <button
+          onClick={googleProvider}
           type="button"
-          className="w-full flex items-center gap-2 justify-center my-4 bg-white border border-gray-200 py-3 rounded-full text-gray-700 hover:bg-gray-50 transition-all"
+          disabled={isPendingGoogle}
+          className="w-full flex items-center gap-2 justify-center my-4 bg-white border border-gray-200 py-3 rounded-full text-gray-700 hover:bg-gray-50 transition-all disabled:opacity-70"
         >
-          <img
-            className="h-5 w-5"
-            src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/login/googleFavicon.png"
-            alt="googleFavicon"
-          />
-          Register with Google
+          {isPendingGoogle ? (
+            <>
+              <img
+                className="h-5 w-5 animate-spin"
+                src="https://www.svgrepo.com/show/70469/loading.svg"
+                alt="loading"
+              />
+              <span>Signing in with Google...</span>
+            </>
+          ) : (
+            <>
+              <img
+                className="h-5 w-5"
+                src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/login/googleFavicon.png"
+                alt="googleFavicon"
+              />
+              Register with Google
+            </>
+          )}
         </button>
+
+        {errorGoogle && (
+          <p className="text-center text-red-500 mt-2 text-sm">{errorGoogle}</p>
+        )}
       </div>
     </div>
   );

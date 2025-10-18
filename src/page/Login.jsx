@@ -3,6 +3,7 @@ import { Form, Link, useActionData } from "react-router-dom";
 import { LoginError } from "../components/useError";
 import { useLogin } from "../hooks/useLogin";
 import { useResetPassword } from "../hooks/useResetPassword";
+import { useGoogle } from "../hooks/useGoogle";
 
 export async function action({ request }) {
   const formData = await request.formData();
@@ -16,6 +17,7 @@ function Login() {
   const { _login, error, isPending } = useLogin();
   const { resetPassword } = useResetPassword();
   const [showReset, setShowReset] = useState(false);
+  const { errorGoogle, googleProvider, isPendingGoogle } = useGoogle();
 
   useEffect(() => {
     if (user?.email && user?.password) {
@@ -119,16 +121,35 @@ function Login() {
         </p>
 
         <button
+          onClick={googleProvider}
           type="button"
-          className="w-full flex items-center gap-2 justify-center my-4 bg-white border border-gray-200 py-3 rounded-full text-gray-700 hover:bg-gray-50 transition-all"
+          disabled={isPendingGoogle}
+          className="w-full flex items-center gap-2 justify-center my-4 bg-white border border-gray-200 py-3 rounded-full text-gray-700 hover:bg-gray-50 transition-all disabled:opacity-70"
         >
-          <img
-            className="h-5 w-5"
-            src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/login/googleFavicon.png"
-            alt="googleFavicon"
-          />
-          Log in with Google
+          {isPendingGoogle ? (
+            <>
+              <img
+                className="h-5 w-5 animate-spin"
+                src="https://www.svgrepo.com/show/70469/loading.svg"
+                alt="loading"
+              />
+              <span>Signing in with Google...</span>
+            </>
+          ) : (
+            <>
+              <img
+                className="h-5 w-5"
+                src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/login/googleFavicon.png"
+                alt="googleFavicon"
+              />
+              Log in with Google
+            </>
+          )}
         </button>
+
+        {errorGoogle && (
+          <p className="text-center text-red-500 mt-2 text-sm">{errorGoogle}</p>
+        )}
       </div>
     </div>
   );
