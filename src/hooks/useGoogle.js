@@ -28,7 +28,6 @@ export const useGoogle = () => {
       });
 
       dispatch(login(req.user));
-      console.log(req.user);
     } catch (error) {
       setError(useFirebaseError(error.message));
       console.log(error.message);

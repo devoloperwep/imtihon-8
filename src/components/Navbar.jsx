@@ -66,8 +66,8 @@ function Navbar() {
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink to="/editProfile" className="text-sm text-lime-700">
-                    Edit profile
+                  <NavLink to="/profile" className="text-sm text-lime-700">
+                    Profile
                   </NavLink>
                 </li>
                 <li>

@@ -14,7 +14,6 @@ import { useCollection } from "../hooks/useCollection";
 function Home() {
   const recipe = useSelector((store) => store.recipe);
   const { data } = useCollection("users");
-  console.log(data);
   const dispatch = useDispatch();
 
   const handleClearAll = () => {

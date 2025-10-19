@@ -5,6 +5,8 @@ import { useEffect } from "react";
 import { CreateRecipe, EditProfile, Home, Login, Register } from "./page";
 import { action as RegisterAction } from "./page/Register";
 import { action as LoginAction } from "./page/Login";
+import Profile from "./page/Profile";
+
 // components
 import ProtectedRoutes from "./components/ProtectedRoutes";
 // react-router-dom
@@ -47,8 +49,12 @@ function App() {
           element: <CreateRecipe />,
         },
         {
-          path: "editProfile",
+          path: "/editProfile",
           element: <EditProfile />,
+        },
+        {
+          path: "/profile",
+          element: <Profile />,
         },
       ],
     },
