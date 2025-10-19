@@ -2,10 +2,9 @@
 import { useEffect } from "react";
 
 // page
-import { CreateRecipe, EditProfile, Home, Login, Register } from "./page";
+import { CreateRecipe, Home, Login, Register, Profile } from "./page";
 import { action as RegisterAction } from "./page/Register";
 import { action as LoginAction } from "./page/Login";
-import Profile from "./page/Profile";
 
 // components
 import ProtectedRoutes from "./components/ProtectedRoutes";
@@ -26,6 +25,7 @@ import { isAuthReady, login } from "./app/feature/userSlice";
 // firebase
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/config";
+import UserInfo from "./page/UserInfo";
 
 function App() {
   const dispatch = useDispatch();
@@ -49,12 +49,12 @@ function App() {
           element: <CreateRecipe />,
         },
         {
-          path: "/editProfile",
-          element: <EditProfile />,
-        },
-        {
           path: "/profile",
           element: <Profile />,
+        },
+        {
+          path: "/userInfo/:id/",
+          element: <UserInfo />,
         },
       ],
     },

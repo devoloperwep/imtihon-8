@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { auth } from "../firebase/config";
 import { sendEmailVerification } from "firebase/auth";
+import { Link } from "react-router-dom";
 
 function Profile() {
   const { user } = useSelector((store) => store.user);
@@ -28,7 +29,7 @@ function Profile() {
   }
 
   return (
-    <div className="h-[80vh] flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+    <div className="h-[85vh] flex items-center justify-center bg-gray-50 dark:bg-gray-900">
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 max-w-sm w-full text-center">
         <div className="flex justify-center">
           <img
@@ -66,13 +67,6 @@ function Profile() {
         </div>
 
         <div className="mt-6 space-y-3">
-          <button
-            onClick={() => console.log("Edit profile clicked")}
-            className="w-full py-2.5 rounded-lg bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium shadow-sm transition"
-          >
-            Edit Profile
-          </button>
-
           {!user.emailVerified && (
             <button
               onClick={sendEmailLink}
