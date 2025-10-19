@@ -17,7 +17,6 @@ function CreateRecipe() {
   // redux
   const recipe = useSelector((store) => store.recipe);
   const dispatch = useDispatch();
-  console.log(recipe);
   // useState
   const [data, setData] = useState(null);
   const [preview, setPreview] = useState(false);
