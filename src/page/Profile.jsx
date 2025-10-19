@@ -1,7 +1,21 @@
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { auth } from "../firebase/config";
+import { sendEmailVerification } from "firebase/auth";
 
 function Profile() {
   const { user } = useSelector((store) => store.user);
+
+  const sendEmailLink = () => {
+    sendEmailVerification(auth.currentUser)
+      .then(() => {
+        toast.success("Check your email");
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        toast.error(errorMessage);
+      });
+  };
 
   if (!user) {
     return (
@@ -51,12 +65,23 @@ function Profile() {
           </p>
         </div>
 
-        <button
-          onClick={() => console.log("Edit profile clicked")}
-          className="mt-6 w-full py-2.5 rounded-lg bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium shadow-sm transition"
-        >
-          Edit Profile
-        </button>
+        <div className="mt-6 space-y-3">
+          <button
+            onClick={() => console.log("Edit profile clicked")}
+            className="w-full py-2.5 rounded-lg bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium shadow-sm transition"
+          >
+            Edit Profile
+          </button>
+
+          {!user.emailVerified && (
+            <button
+              onClick={sendEmailLink}
+              className="w-full py-2.5 rounded-lg bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-medium shadow-sm transition"
+            >
+              Send Verification Link ✉️
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
